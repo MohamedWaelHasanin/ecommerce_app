@@ -13,6 +13,7 @@ class HomePage extends StatelessWidget {
     required String description,
   }) {
     return Column(
+
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
@@ -65,7 +66,7 @@ class HomePage extends StatelessWidget {
             Image.network(
               AppAssets.topBannerHomePageAsset,
               width: double.infinity,
-              height: size * 0.3,
+              height: size * 0.25,
               fit: BoxFit.cover,
             ),
             Opacity(
@@ -104,12 +105,12 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: 8.0,),
               SizedBox(
-                height: 300,
+                height: 310,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: dummyProducts.map(
                           (e) => Padding(
-                        padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.fromLTRB(8.0,8,0,0),
                         child: ListItemHome(product:e),
                       )
                   ).toList(),
@@ -131,12 +132,12 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: 8.0,),
               SizedBox(
-                height: 300,
+                height: 350,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: dummyProducts.map(
                           (e) => Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(8.0,8,0,0),
                         child: ListItemHome(product:e),
                       )
                   ).toList(),
