@@ -38,10 +38,22 @@ class MyApp extends StatelessWidget {
                 color: Colors.grey,
               ),
             ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(2.0),
+            borderSide: BorderSide(
+              color: Colors.red,
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(2.0),
+            borderSide: BorderSide(
+              color: Colors.red,
+            ),
+          ),
         ),
       ),// ThemeData
       onGenerateRoute: onGenerate ,
-      initialRoute: AppRoutes.LoginPageRoute,
+      initialRoute: AppRoutes.loginPageRoute,
       // home:Scaffold(),
     ); // MaterialApp
   }
