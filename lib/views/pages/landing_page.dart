@@ -27,9 +27,10 @@ class LandingPage extends StatelessWidget {
           }
           return const BottomNavbar();
         }
-        // TODO there is refactor
+        // TODO there is refactor here
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
       },
     );
   }
 }
+
