@@ -33,7 +33,7 @@ class _AuthPageState extends State<AuthPage> {
     try {
       await model.submit();
       if (!mounted) return;
-      Navigator.of(context).pushNamed(AppRoutes.landingPageRoute);
+      // Navigator.of(context).pushNamed(AppRoutes.landingPageRoute);
     } catch (e) {
       // TODO there is refactor
       showDialog(
