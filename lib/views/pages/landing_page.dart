@@ -3,7 +3,6 @@ import 'package:ecommerce_app/views/pages/bottom_navbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../services/auth.dart';
 import 'auth_page.dart';
 import 'home_page.dart';
@@ -13,7 +12,7 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<AuthBase>(context, listen: false);
+    final auth = Provider.of<AuthBase>(context);
     return StreamBuilder<User?>(
       stream: auth.authStateChanges(),
       builder: (context, snapshot) {
@@ -25,7 +24,11 @@ class LandingPage extends StatelessWidget {
               child: const AuthPage(),
             );
           }
-          return const BottomNavbar();
+          // return const BottomNavbar();
+          return ChangeNotifierProvider<AuthController>(
+            create: (_) => AuthController(auth: auth),
+            child: const BottomNavbar(),
+          );
         }
         // TODO there is refactor here
         return const Scaffold(body: Center(child: CircularProgressIndicator()));

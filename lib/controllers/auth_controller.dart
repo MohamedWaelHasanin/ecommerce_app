@@ -44,4 +44,12 @@ class AuthController with ChangeNotifier {
     this.authFormType = authFormType ?? this.authFormType;
     notifyListeners();
  }
+  Future<void> logOut()async{
+    try {
+      await auth.logOut();
+    } on Exception catch (e) {
+      debugPrint("LogOut Error: $e");
+    }
+  }
 }
+

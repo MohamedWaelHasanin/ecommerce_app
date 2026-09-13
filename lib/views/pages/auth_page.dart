@@ -9,7 +9,6 @@ import '../../utilities/enums.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
-
   @override
   State<AuthPage> createState() => _AuthPageState();
 }
@@ -34,7 +33,7 @@ class _AuthPageState extends State<AuthPage> {
     try {
       await model.submit();
       if (!mounted) return;
-      Navigator.of(context).pushNamed(AppRoutes.bottomNavBarRoute);
+      Navigator.of(context).pushNamed(AppRoutes.landingPageRoute);
     } catch (e) {
       // TODO there is refactor
       showDialog(
