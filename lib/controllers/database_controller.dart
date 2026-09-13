@@ -5,7 +5,7 @@ import '../models/Product.dart';
 abstract class Database {
   Stream<List<Product>>productsStream();
 }
-class FirestoreDatabse implements Database{
+class FirestoreDatabase implements Database{
   final _service = FirestoreServices.instance;
   @override
   Stream<List<Product>> productsStream() => _service.collectionsStream(
