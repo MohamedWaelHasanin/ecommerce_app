@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/controllers/auth_controller.dart';
+import 'package:ecommerce_app/controllers/database_controller.dart';
 import 'package:ecommerce_app/views/pages/bottom_navbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,10 @@ class LandingPage extends StatelessWidget {
           // return const BottomNavbar();
           return ChangeNotifierProvider<AuthController>(
             create: (_) => AuthController(auth: auth),
-            child: const BottomNavbar(),
+            child: Provider<Database>(
+              create: (_) => FirestoreDatabse(user.uid),
+              child: const BottomNavbar()
+              ),
           );
         }
         // TODO there is refactor here

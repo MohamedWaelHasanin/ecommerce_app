@@ -84,9 +84,9 @@ class ListItemHome extends StatelessWidget {
             children: [
               for(int i=0;i<5;i++)
                 Icon(
-                  Icons.star_rate,
+                  (product.rate!=0)?Icons.star_rate:Icons.star_rate_outlined,
                   size: 16,
-                  color: Colors.yellow,
+                  color:Colors.yellow,
                 ),
               Text(' (10)',style: Theme.of(context).textTheme.labelSmall!.copyWith(
                 color: Colors.grey,
