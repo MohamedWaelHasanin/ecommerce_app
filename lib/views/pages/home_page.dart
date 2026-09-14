@@ -1,49 +1,43 @@
+import 'package:ecommerce_app/controllers/database_controller.dart';
 import 'package:ecommerce_app/models/Product.dart';
 import 'package:ecommerce_app/utilities/assets.dart';
 import 'package:ecommerce_app/views/widgets/list_item_home.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   /// TODO: Temp code till refactor to a seperate class with a seperate context
-  Widget _builderHeaderOfList(BuildContext context, {
+  Widget _builderHeaderOfList(
+    BuildContext context, {
     required String title,
     VoidCallback? onTap,
     required String description,
   }) {
     return Column(
-
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title, style: Theme
-                .of(context)
-                .textTheme
-                .headlineLarge!
-                .copyWith(fontWeight: FontWeight.bold),
+            Text(
+              title,
+              style: Theme.of(context).textTheme.headlineLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
             ),
             InkWell(
               onTap: onTap,
               child: Text(
                 'View all',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .titleSmall,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
             ),
           ],
         ),
         Text(
           description,
-          style: Theme
-              .of(context)
-              .textTheme
-              .titleSmall
-          !
+          style: Theme.of(context).textTheme.titleSmall!
               .copyWith(color: Colors.grey),
         ),
       ],
@@ -52,10 +46,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final size = MediaQuery.of(context).size.height;
+    final database = Provider.of<Database>(context);
     return ListView(
       padding: EdgeInsets.zero,
       children: [
@@ -84,10 +76,7 @@ class HomePage extends StatelessWidget {
               ),
               child: Text(
                 'Street clothes',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .displaySmall!
+                style: Theme.of(context).textTheme.displaySmall!
                     .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
@@ -103,23 +92,39 @@ class HomePage extends StatelessWidget {
                 title: 'Sale',
                 description: 'Super summer sale',
               ),
-              const SizedBox(height: 8.0,),
+              const SizedBox(height: 8.0),
               SizedBox(
                 height: 310,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: dummyProducts.map(
-                          (e) => Padding(
-                            padding: const EdgeInsets.fromLTRB(8.0,8,0,0),
-                        child: ListItemHome(product:e),
-                      )
-                  ).toList(),
+                child: StreamBuilder<List<Product>>(
+                  stream: database.salesProductsStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      final products = snapshot.data;
+                      if (products == null || products.isEmpty) {
+                        return const Center(child: Text('No Data Available!'));
+                      }
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: products.length,
+                        itemBuilder: (_,int index)=>Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                  8.0,
+                                  8,
+                                  0,
+                                  0,
+                                ),
+                                child: ListItemHome(product: products[index]),
+                              ),
+                      );
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
                 ),
               ),
             ],
           ),
-
         ),
+
         ///
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -130,22 +135,38 @@ class HomePage extends StatelessWidget {
                 title: 'New',
                 description: 'Super new products',
               ),
-              const SizedBox(height: 8.0,),
+              const SizedBox(height: 8.0),
               SizedBox(
                 height: 350,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: dummyProducts.map(
-                          (e) => Padding(
-                        padding: const EdgeInsets.fromLTRB(8.0,8,0,0),
-                        child: ListItemHome(product:e),
-                      )
-                  ).toList(),
+                child: StreamBuilder(
+                  stream: database.newProductsStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      final products = snapshot.data;
+                      if (products == null || products.isEmpty) {
+                        return const Center(child: Text('No Data Available!'));
+                      }
+
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: products.length,
+                        itemBuilder:(_,int index)=>Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                  8.0,
+                                  8,
+                                  0,
+                                  0,
+                                ),
+                                child: ListItemHome(product: products[index]),
+                              ),
+                      );
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
                 ),
               ),
             ],
           ),
-
         ),
       ],
     );

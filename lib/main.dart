@@ -1,8 +1,16 @@
+import 'package:ecommerce_app/firebase_options.dart';
+import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/utilities/router.dart';
 import 'package:ecommerce_app/utilities/routes.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 class MyApp extends StatelessWidget {
@@ -11,50 +19,53 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner:false ,
-      title: 'Ecommerce App',
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFF9F9F9),
-        primaryColor: Colors.red,
-        primaryColorLight: Colors.white,
-        inputDecorationTheme: InputDecorationTheme(
-            labelStyle: Theme.of(context).textTheme.bodyLarge,
-            focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(2.0),
-            borderSide: BorderSide(
-              color: Colors.grey,
-              ),
-            ),
-            disabledBorder:OutlineInputBorder(
+    return Provider<AuthBase>(
+      create:(_)=>Auth() ,
+      child: MaterialApp(
+        debugShowCheckedModeBanner:false ,
+        title: 'Ecommerce App',
+        theme: ThemeData(
+          scaffoldBackgroundColor: const Color(0xFFF9F9F9),
+          primaryColor: Colors.red,
+          primaryColorLight: Colors.white,
+          inputDecorationTheme: InputDecorationTheme(
+              labelStyle: Theme.of(context).textTheme.bodyLarge,
+              focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(2.0),
               borderSide: BorderSide(
                 color: Colors.grey,
+                ),
               ),
-            ) ,
-            enabledBorder: OutlineInputBorder(
+              disabledBorder:OutlineInputBorder(
+                borderRadius: BorderRadius.circular(2.0),
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                ),
+              ) ,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(2.0),
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                ),
+              ),
+            errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(2.0),
               borderSide: BorderSide(
-                color: Colors.grey,
+                color: Colors.red,
               ),
             ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(2.0),
-            borderSide: BorderSide(
-              color: Colors.red,
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(2.0),
+              borderSide: BorderSide(
+                color: Colors.red,
+              ),
             ),
           ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(2.0),
-            borderSide: BorderSide(
-              color: Colors.red,
-            ),
-          ),
-        ),
-      ),// ThemeData
-      onGenerateRoute: onGenerate ,
-      initialRoute: AppRoutes.loginPageRoute,
-      // home:Scaffold(),
+        ),// ThemeData
+        onGenerateRoute: onGenerate ,
+        initialRoute: AppRoutes.landingPageRoute,
+        // home:Scaffold(),
+      ),
     ); // MaterialApp
   }
 }

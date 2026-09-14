@@ -1,9 +1,43 @@
+import 'package:ecommerce_app/controllers/auth_controller.dart';
+import 'package:ecommerce_app/controllers/database_controller.dart';
+import 'package:ecommerce_app/views/pages/bottom_navbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../services/auth.dart';
+import 'auth_page.dart';
+import 'home_page.dart';
+
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final auth = Provider.of<AuthBase>(context);
+    return StreamBuilder<User?>(
+      stream: auth.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          final user = snapshot.data;
+          if (user == null) {
+            return ChangeNotifierProvider<AuthController>(
+              create: (_) => AuthController(auth: auth),
+              child: const AuthPage(),
+            );
+          }
+          // return const BottomNavbar();
+          return ChangeNotifierProvider<AuthController>(
+            create: (_) => AuthController(auth: auth),
+            child: Provider<Database>(
+              create: (_) => FirestoreDatabse(user.uid),
+              child: const BottomNavbar()
+              ),
+          );
+        }
+        // TODO there is refactor here
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      },
+    );
   }
 }
+
