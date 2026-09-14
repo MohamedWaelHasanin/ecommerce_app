@@ -1,0 +1,55 @@
+import 'package:ecommerce_app/utilities/enums.dart';
+import 'package:flutter/material.dart';
+import 'package:ecommerce_app/services/auth.dart';
+class AuthController with ChangeNotifier {
+  final AuthBase auth;
+  String?email;
+  String?password;
+  AuthFormType authFormType = AuthFormType.login;
+
+  AuthController({
+    String email='',
+    String password='',
+    AuthFormType authFormType =AuthFormType.login,
+    required this.auth
+  });
+  Future<void> submit() async{
+    try{
+      if (authFormType == AuthFormType.login) {
+        await auth.loginWithEmailAndPassword(email!, password!);
+      } else {
+        await auth.signUpWithEmailAndPassword(email!, password!);
+      }
+    }catch(e){
+      rethrow;
+    }
+  }
+  void toggleFormType(){
+    final formType= authFormType == AuthFormType.login?AuthFormType.register:AuthFormType.login;
+    copyWith(
+      email: '',
+      password: '',
+      authFormType: formType,
+    );
+  }
+  void updateEmail(String email) => copyWith(email: email);
+  void updatePassword(String password) => copyWith(password: password);
+  void copyWith({
+    String?email,
+    String? password,
+    AuthFormType? authFormType,
+}){
+    this.email = email??this.email;
+    this.password =password??this.password;
+    this.authFormType = authFormType ?? this.authFormType;
+    notifyListeners();
+ }
+  Future<void> logOut()async{
+    try {
+      await auth.logOut();
+    } on Exception catch (e) {
+      debugPrint("LogOut Error: $e");
+    }
+  }
+}
+
