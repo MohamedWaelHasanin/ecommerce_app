@@ -1,4 +1,6 @@
 import 'package:ecommerce_app/views/pages/home_page.dart';
+import 'package:ecommerce_app/views/pages/product_details_page.dart';
+import 'package:ecommerce_app/views/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
@@ -65,9 +67,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
           ),
         ),
         PersistentTabConfig(
-          screen: const Scaffold(
-            body: Center(child: Text('Page5'),),
-          ) ,
+          screen: ProfilePage(),
           item: ItemConfig(
               icon: const Icon(Icons.person),
               title: "Profile",
@@ -75,6 +75,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
               activeForegroundColor: Colors.red
           ),
         ),
+
       ],
       navBarBuilder: (navBarConfig) =>
           Style1BottomNavBar(
